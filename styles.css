@@ -331,12 +331,23 @@ li a:hover::after {
 
 main {
     margin: 8px 0 16px 0;
-    padding: 64px 16px;
+    padding:  16px;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     width: calc(100% - 32px);
-    height: 100%;
+    height: calc(100% - 10% - 32px);
+    overflow: hidden;
+}
+
+.texts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
 }
 
 h3 {
@@ -350,7 +361,7 @@ h3 {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 50%;
     gap: 16px;
 }
 
