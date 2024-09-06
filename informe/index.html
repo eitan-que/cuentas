@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/informe/informe.css">
 </head>
 <body>
     <header class="container">
@@ -17,11 +18,23 @@
     <main class="container">
         <h1>Informe</h1>
         <br>
-        <h3>En esta aplicacion podras manejar tus finanzas de una forma mas eficiente mediante en envio de formularios en cada gasto/suma para visualizarlo luego.</h3>
+        <h3>Visualiza tus finanzas e identifica patrones. A medida que envies mas formularios, tendras mejores resultados.</h3>
         <br>
-        <div class="navegationButtons">
-            <a class="btn" href="/formulario/">Formulario</a>
-            <a class="btn" href="/informe/">Informe</a>
+        <div class="dataGridContainer">
+            <div class="dataGrid">
+                <div class="dataRow" id="row0">
+                    <div class="dataGridItem">Fecha</div>
+                    <div class="dataGridItem">Hora</div>
+                    <div class="dataGridItem">Monto</div>
+                    <div class="dataGridItem">Razon</div>
+                </div>
+                <div class="dataRow" id="row1">
+                    <div class="dataGridItem">11/09/2024</div>
+                    <div class="dataGridItem">08:46</div>
+                    <div class="dataGridItem">$<p>1200</p></div>
+                    <div class="dataGridItem">Example</div>
+                </div>
+            </div>
         </div>
     </main>
 </body>
