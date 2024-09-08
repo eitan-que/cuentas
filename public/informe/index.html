@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas</title>
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/informe/informe.css">
+    <link rel="stylesheet" href="informe.css">
 </head>
 <body>
     <header class="container">
@@ -18,10 +18,8 @@
     <main class="container">
         <div class="texts">
             <h1>Informe</h1>
-            <br>
             <h3>Visualiza tus finanzas e identifica patrones. A medida que envies mas formularios, tendras mejores resultados.</h3>
         </div>
-        <br>
         <div class="dataGridContainer">
             <div class="dataInfoRow dataRow" id="row0">
                 <div class="dataGridItem">Fecha</div>
@@ -39,30 +37,57 @@
                 <div class="dataGridItem"></div>
             </div>
         </div>
+        <div class="filters">
+            <div class="filtersContainer">
+                <h3>Filtar por:</h3>
+                <select name="filterSelector" id="filterSelector">
+                    <option value="" disabled selected>Elige un filtro...</option>
+                    <optgroup label="Fecha">
+                        <option value="dateRange">Rango de fechas</option>
+                        <option value="recent">Tiempo</option>
+                    </optgroup>
+                    <optgroup label="Movimiento">
+                        <option value="reason">Razón</option>
+                        <option value="amount">Monto</option>
+                    </optgroup>
+                </select>
+                <div class="dataRangeFilter hidden" id="dataRangeFilter">
+                    <!-- Contenido del filtro de rango de fechas -->
+                    <label for="startDate">Fecha de inicio:</label>
+                    <input type="date" id="startDate" name="startDate">
+                    <label for="endDate">Fecha de fin:</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <div class="recentFilter hidden" id="recentFilter">
+                    <!-- Contenido del filtro de tiempo reciente -->
+                    <label for="recent">Menos de:</label>
+                    <select name="recent" id="recent">
+                        <option value="day">1 Día</option>
+                        <option value="week">1 Semana</option>
+                        <option value="month">1 Mes</option>
+                        <option value="year">1 Año</option>
+                    </select>
+                </div>
+                <div class="reasonFilter hidden" id="reasonFilter">
+                    <!-- Contenido del filtro de razón -->
+                    <label for="reason">Razón:</label>
+                    <input type="text" maxlength="20" id="reason" name="reason">
+                </div>
+                <div class="amountFilter hidden" id="amountFilter">
+                    <!-- Contenido del filtro de monto -->
+                    <label for="minAmount">Monto mínimo:</label>
+                    <input type="number" id="minAmount" name="minAmount">
+                    <label for="maxAmount">Monto máximo:</label>
+                    <input type="number" id="maxAmount" name="maxAmount">
+                </div>
+                <button id="addFilterButton">Agregar Filtro</button>
+            </div>
+            <div class="actualFilters hidden">
+                <div id="filtersContainer"></div>
+                <button id="clearFiltersButton">Limpiar Filtros</button>
+            </div>
+        </div>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        fetch('/api/get-cuentas')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('dataRowsContainer');
-                let totalMonto = 0;
-                data.forEach((cuenta, index) => {
-                    const dataRow = document.createElement('div');
-                    dataRow.classList.add('dataRow');
-                    dataRow.innerHTML = `
-                        <div class="dataGridItem">${cuenta.fecha}</div>
-                        <div class="dataGridItem">${cuenta.hora}</div>
-                        <div class="dataGridItem">$${cuenta.monto}</div>
-                        <div class="dataGridItem">${cuenta.razon}</div>
-                    `;
-                    container.appendChild(dataRow);
-                    totalMonto += parseFloat(cuenta.monto);
-                });
-                document.getElementById('totalMonto').innerText = `$${totalMonto.toFixed(2)}`;
-            })
-            .catch(error => console.error('Error al cargar los datos:', error));
-    });
-    </script>
+    <script src="informe.js"></script>
 </body>
 </html>
