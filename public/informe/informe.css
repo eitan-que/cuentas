@@ -8,6 +8,7 @@
     border: 2px solid #fff;
     border-radius: 16px;
     height: 50%;
+    overflow: hidden;
 }
 
 .dataInfoRow {
@@ -25,6 +26,10 @@
     gap: 4px;
     scrollbar-width: 4px;
     scrollbar-color: rgba(255, 255, 255, .5) transparent;
+}
+
+.totalRow {
+    border-top: 2px solid #fff;
 }
 
 .dataRow {

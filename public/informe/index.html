@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentas</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/informe/informe.css">
+</head>
+<body>
+    <header class="container">
+        <h1><a href="/">Cuentas</a></h1>
+        <ul>
+            <li><a href="/formulario/">Formulario</a></li>
+            <li><a href="/informe/">Informe</a></li>
+        </ul>
+    </header>
+    <main class="container">
+        <div class="texts">
+            <h1>Informe</h1>
+            <br>
+            <h3>Visualiza tus finanzas e identifica patrones. A medida que envies mas formularios, tendras mejores resultados.</h3>
+        </div>
+        <br>
+        <div class="dataGridContainer">
+            <div class="dataInfoRow dataRow" id="row0">
+                <div class="dataGridItem">Fecha</div>
+                <div class="dataGridItem">Hora</div>
+                <div class="dataGridItem">Monto</div>
+                <div class="dataGridItem">Razon</div>
+            </div>
+            <div class="dataRowsContainer" id="dataRowsContainer">
+                <!-- Los datos se cargarán aquí -->
+            </div>
+            <div class="dataRow totalRow" id="totalRow">
+                <div class="dataGridItem">Total</div>
+                <div class="dataGridItem"></div>
+                <div class="dataGridItem" id="totalMonto">$0</div>
+                <div class="dataGridItem"></div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/get-cuentas')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('dataRowsContainer');
+                let totalMonto = 0;
+                data.forEach((cuenta, index) => {
+                    const dataRow = document.createElement('div');
+                    dataRow.classList.add('dataRow');
+                    dataRow.innerHTML = `
+                        <div class="dataGridItem">${cuenta.fecha}</div>
+                        <div class="dataGridItem">${cuenta.hora}</div>
+                        <div class="dataGridItem">$${cuenta.monto}</div>
+                        <div class="dataGridItem">${cuenta.razon}</div>
+                    `;
+                    container.appendChild(dataRow);
+                    totalMonto += parseFloat(cuenta.monto);
+                });
+                document.getElementById('totalMonto').innerText = `$${totalMonto.toFixed(2)}`;
+            })
+            .catch(error => console.error('Error al cargar los datos:', error));
+    });
+    </script>
+</body>
+</html>
