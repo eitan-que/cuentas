@@ -26,6 +26,7 @@
                 <div class="dataGridItem">Hora</div>
                 <div class="dataGridItem">Monto</div>
                 <div class="dataGridItem">Razon</div>
+                <div class="dataGridItem">Gasto/Suma</div>
             </div>
             <div class="dataRowsContainer" id="dataRowsContainer">
                 <!-- Los datos se cargarán aquí -->
@@ -34,6 +35,7 @@
                 <div class="dataGridItem">Total</div>
                 <div class="dataGridItem"></div>
                 <div class="dataGridItem" id="totalMonto">$0</div>
+                <div class="dataGridItem"></div>
                 <div class="dataGridItem"></div>
             </div>
         </div>
@@ -49,6 +51,7 @@
                     <optgroup label="Movimiento">
                         <option value="reason">Razón</option>
                         <option value="amount">Monto</option>
+                        <option value="gastoSuma">Gasto o Suma</option>
                     </optgroup>
                 </select>
                 <div class="dataRangeFilter hidden" id="dataRangeFilter">
@@ -79,6 +82,14 @@
                     <input type="number" id="minAmount" name="minAmount" max="999999999" min="-999999999">
                     <label for="maxAmount">Monto máximo:</label>
                     <input type="number" id="maxAmount" name="maxAmount" max="999999999" min="-999999999">
+                </div>
+                <div class="gastoSumaFilter hidden" id="gastoSumaFilter">
+                    <!-- Contenido del filtro de suma o gasto -->
+                    <label for="gastoSuma">Gasto o Suma:</label>
+                    <select name="gastoSuma" id="gastoSuma">
+                        <option value="gasto">Gasto</option>
+                        <option value="suma">Suma</option>
+                    </select>
                 </div>
                 <button id="addFilterButton">Agregar Filtro</button>
             </div>

@@ -4,10 +4,10 @@ const path = require('path');
 const router = express.Router();
 
 router.post('/', (req, res) => {
-    const { razon, monto } = req.body;
+    const { razon, monto, gastoSumaSelector } = req.body;
     const fecha = new Date().toLocaleDateString();
     const hora = new Date().toLocaleTimeString();
-    const newLine = `${fecha},${hora},${monto},${razon}\n`;
+    const newLine = `${fecha},${hora},${monto},${razon},${gastoSumaSelector}\n`;
 
     fs.appendFile(path.join(__dirname, '../data', 'cuentas.csv'), newLine, (err) => {
         if (err) {

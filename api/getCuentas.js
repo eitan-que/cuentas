@@ -11,8 +11,8 @@ router.get('/', (req, res) => {
         } else {
             const rows = data.split('\n').filter(row => row.trim() !== '');
             const cuentas = rows.map(row => {
-                const [fecha, hora, monto, razon] = row.split(',');
-                return { fecha, hora, monto, razon };
+                const [fecha, hora, monto, razon, gastoSumaSelector] = row.split(',');
+                return { fecha, hora, monto, razon, gastoSumaSelector };
             });
             res.json(cuentas);
         }

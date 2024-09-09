@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const recentFilter = document.getElementById('recentFilter');
     const reasonFilter = document.getElementById('reasonFilter');
     const amountFilter = document.getElementById('amountFilter');
+    const gastoSumaFilter = document.getElementById('gastoSumaFilter'); // Nuevo filtro
     const addFilterButton = document.getElementById('addFilterButton');
     const clearFiltersButton = document.getElementById('clearFiltersButton');
     const filtersContainer = document.getElementById('filtersContainer');
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         recentFilter.classList.add('hidden');
         reasonFilter.classList.add('hidden');
         amountFilter.classList.add('hidden');
+        gastoSumaFilter.classList.add('hidden'); // Nuevo filtro
 
         // Mostrar el filtro seleccionado
         const selectedValue = filterSelector.value;
@@ -27,6 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
             reasonFilter.classList.remove('hidden');
         } else if (selectedValue === 'amount') {
             amountFilter.classList.remove('hidden');
+        } else if (selectedValue === 'gastoSuma') { // Nuevo filtro
+            gastoSumaFilter.classList.remove('hidden');
         }
     });
 
@@ -102,6 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 : !isNaN(filter.minAmount)
                 ? `Mayor a ${filter.minAmount}`
                 : '';
+        } else if (filterType === 'gastoSuma') { // Nuevo filtro
+            filter.gastoSuma = document.getElementById('gastoSuma').value;
+            if (!filter.gastoSuma) {
+                return;
+            }
+            filter.display = `Tipo: ${filter.gastoSuma}`;
         }
 
         filters.push(filter);
@@ -179,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             const cuentaMonto = parseFloat(cuenta.monto);
                             include = include && (!isNaN(filter.minAmount) ? cuentaMonto >= filter.minAmount : true) &&
                                     (!isNaN(filter.maxAmount) ? cuentaMonto <= filter.maxAmount : true);
+                        } else if (filter.type === 'gastoSuma') { // Nuevo filtro
+                            include = include && cuenta.gastoSumaSelector === filter.gastoSuma;
                         }
                     });
 
@@ -190,9 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="dataGridItem">${cuenta.hora}</div>
                             <div class="dataGridItem">$${cuenta.monto}</div>
                             <div class="dataGridItem">${cuenta.razon}</div>
+                            <div class="dataGridItem">${cuenta.gastoSumaSelector}</div>
                         `;
                         container.appendChild(dataRow);
-                        totalMonto += parseFloat(cuenta.monto);
+                        if (cuenta.gastoSumaSelector === 'gasto') {
+                            totalMonto -= parseFloat(cuenta.monto);
+                        } else if (cuenta.gastoSumaSelector === 'suma') {
+                            totalMonto += parseFloat(cuenta.monto);
+                        }
                     }
                 });
                 document.getElementById('totalMonto').innerText = `$${totalMonto.toFixed(2)}`;
