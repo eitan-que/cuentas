@@ -59,7 +59,7 @@ registerForm.addEventListener('submit', async function(e) {
     const result = await response.json();
     if (response.status !== 200) {
         errorMessage.textContent = result.error;
-        submitButton.disabled = false; // Habilitar el botón de envío si hay un error
+        submitButton.disabled = false;
     } else {
         window.location.href = '/';
     }

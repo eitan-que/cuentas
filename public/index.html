@@ -17,7 +17,7 @@
             <h1>Bienvenido!</h1>
             <h3>En esta aplicacion podras manejar tus finanzas de una forma mas eficiente mediante en envio de formularios en cada gasto/suma para visualizarlo luego.</h3>
         </div>
-        <div class="navegationButtons">
+        <div class="navegationButtons" id="navegationButtons">
             <a class="btn" href="/formulario/">Formulario</a>
             <a class="btn" href="/informe/">Informe</a>
         </div>
@@ -38,6 +38,18 @@
                     navLinks.innerHTML = `
                         <li><a href="/login">Login</a></li>
                         <li><a href="/register">Register</a></li>
+                    `;
+                }
+                const navegationButtons = document.getElementById('navegationButtons');
+                if (data.isAuthenticated) {
+                    navegationButtons.innerHTML = `
+                        <a class="btn" href="/formulario/">Formulario</a>
+                        <a class="btn" href="/informe/">Informe</a>
+                    `;
+                } else {
+                    navegationButtons.innerHTML = `
+                        <a class="btn" href="/login/">Login</a>
+                        <a class="btn" href="/register/">Register</a>
                     `;
                 }
             });
