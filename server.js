@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const isAuthenticated = require('./middleware/isAuthenticated');
-const isNotAuthenticated = require('./middleware/isNotAuthenticated');
 const crypto = require('crypto');
 
 const secret = crypto.randomBytes(64).toString('hex');
