@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const secret = crypto.randomBytes(64).toString('hex');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,10 +33,6 @@ app.use('/api/submit-form', submitForm);
 app.use('/api/get-cuentas', getCuentas);
 app.use('/api/delete-item', deleteItem);
 app.use('/api', sessionRoutes); // Usa las rutas de sesión
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
 app.get('/formulario', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'formulario', 'index.html'));
