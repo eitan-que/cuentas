@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const recentFilter = document.getElementById('recentFilter');
     const reasonFilter = document.getElementById('reasonFilter');
     const amountFilter = document.getElementById('amountFilter');
-    const gastoSumaFilter = document.getElementById('gastoSumaFilter'); // Nuevo filtro
+    const gastoSumaFilter = document.getElementById('gastoSumaFilter');
     const addFilterButton = document.getElementById('addFilterButton');
     const clearFiltersButton = document.getElementById('clearFiltersButton');
     const filtersContainer = document.getElementById('filtersContainer');
@@ -12,14 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let filters = [];
 
     filterSelector.addEventListener('change', function() {
-        // Ocultar todos los filtros
         dataRangeFilter.classList.add('hidden');
         recentFilter.classList.add('hidden');
         reasonFilter.classList.add('hidden');
         amountFilter.classList.add('hidden');
-        gastoSumaFilter.classList.add('hidden'); // Nuevo filtro
+        gastoSumaFilter.classList.add('hidden');
 
-        // Mostrar el filtro seleccionado
         const selectedValue = filterSelector.value;
         if (selectedValue === 'dateRange') {
             dataRangeFilter.classList.remove('hidden');
@@ -29,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reasonFilter.classList.remove('hidden');
         } else if (selectedValue === 'amount') {
             amountFilter.classList.remove('hidden');
-        } else if (selectedValue === 'gastoSuma') { // Nuevo filtro
+        } else if (selectedValue === 'gastoSuma') {
             gastoSumaFilter.classList.remove('hidden');
         }
     });
@@ -106,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 : !isNaN(filter.minAmount)
                 ? `Mayor a ${filter.minAmount}`
                 : '';
-        } else if (filterType === 'gastoSuma') { // Nuevo filtro
+        } else if (filterType === 'gastoSuma') {
             filter.gastoSuma = document.getElementById('gastoSuma').value;
             if (!filter.gastoSuma) {
                 return;
@@ -150,12 +148,17 @@ document.addEventListener('DOMContentLoaded', function() {
         fetchDataAndFilter();
     };
 
+    function parseDate(fechaStr) {
+        const [day, month, year] = fechaStr.split('/');
+        return new Date(`${year}-${month}-${day}`);
+    }    
+    
     function fetchDataAndFilter() {
         fetch('/api/get-cuentas')
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('dataRowsContainer');
-                container.innerHTML = ''; // Limpiar los datos existentes
+                container.innerHTML = '';
                 let totalMonto = 0;
                 data.forEach((cuenta, index) => {
                     let include = true;
@@ -164,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const cuentaFecha = new Date(cuenta.fecha);
                             include = include && (!filter.startDate || cuentaFecha >= filter.startDate) && (!filter.endDate || cuentaFecha <= filter.endDate);
                         } else if (filter.type === 'recent') {
-                            const cuentaFecha = new Date(cuenta.fecha);
+                            const cuentaFecha = parseDate(cuenta.fecha);
                             const now = new Date();
                             if (filter.recent === 'day') {
                                 const oneDayAgo = new Date(now);
@@ -189,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             const cuentaMonto = parseFloat(cuenta.monto);
                             include = include && (!isNaN(filter.minAmount) ? cuentaMonto >= filter.minAmount : true) &&
                                     (!isNaN(filter.maxAmount) ? cuentaMonto <= filter.maxAmount : true);
-                        } else if (filter.type === 'gastoSuma') { // Nuevo filtro
+                        } else if (filter.type === 'gastoSuma') {
                             include = include && cuenta.gastoSumaSelector === filter.gastoSuma;
                         }
                     });
@@ -203,8 +206,65 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="dataGridItem">$${cuenta.monto}</div>
                             <div class="dataGridItem">${cuenta.razon}</div>
                             <div class="dataGridItem">${cuenta.gastoSumaSelector}</div>
+                            <div class="dataGridItem deleteBtnContainer"></div>
                         `;
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Eliminar';
+                        deleteButton.onclick = () => {
+
+                            fetch(`/api/delete-item/${index}`, {
+                                method: 'DELETE'
+                            }).then(response => {
+                                if (response.ok) {
+                                    if (cuenta.gastoSumaSelector === 'gasto') {
+                                        totalMonto += parseFloat(cuenta.monto);
+                                    } else if (cuenta.gastoSumaSelector === 'suma') {
+                                        totalMonto -= parseFloat(cuenta.monto);
+                                    }
+                                    document.getElementById('totalMonto').textContent = `Total: $${totalMonto.toFixed(2)}`;
+
+                                    // Remove the row and update indices
+                                    dataRow.remove();
+                                    updateIndices();
+                                } else {
+                                    response.text().then(text => {
+                                        console.error('Error response:', text);
+                                        alert('Error al eliminar el ítem, intente recargando la pagina');
+                                    });
+                                }
+                            }).catch(error => {
+                            });
+                        };
+
+                        const deleteBtnContainer = dataRow.querySelector(".deleteBtnContainer");
+                        deleteBtnContainer.appendChild(deleteButton);
+
                         container.appendChild(dataRow);
+
+                        function updateIndices() {
+                            const rows = document.querySelectorAll('.dataRow');
+                            rows.forEach((row, newIndex) => {
+                                const deleteButton = row.querySelector('button');
+                                deleteButton.onclick = () => {
+                                    fetch(`/api/delete-item/${newIndex}`, {
+                                        method: 'DELETE'
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            row.remove();
+                                            updateIndices();
+                                        } else {
+                                            response.text().then(text => {
+                                                console.error('Error response:', text);
+                                                alert('Error al eliminar el ítem, intente recargando la pagina');
+                                            });
+                                        }
+                                    }).catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                                };
+                            });
+                        }
                         if (cuenta.gastoSumaSelector === 'gasto') {
                             totalMonto -= parseFloat(cuenta.monto);
                         } else if (cuenta.gastoSumaSelector === 'suma') {
@@ -217,6 +277,5 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error al cargar los datos:', error));
     }
 
-    // Cargar datos sin filtros al inicio
     fetchDataAndFilter();
 });

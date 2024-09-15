@@ -10,9 +10,7 @@
 <body>
     <header class="container">
         <h1><a href="/">Cuentas</a></h1>
-        <ul>
-            <li><a href="/formulario/">Formulario</a></li>
-            <li><a href="/informe/">Informe</a></li>
+        <ul id="navLinks">
         </ul>
     </header>
     <main class="container">
@@ -27,6 +25,7 @@
                 <div class="dataGridItem">Monto</div>
                 <div class="dataGridItem">Razon</div>
                 <div class="dataGridItem">Gasto/Suma</div>
+                <div class="dataGridItem">Acciones</div>
             </div>
             <div class="dataRowsContainer" id="dataRowsContainer">
                 <!-- Los datos se cargarán aquí -->
@@ -35,6 +34,7 @@
                 <div class="dataGridItem">Total</div>
                 <div class="dataGridItem"></div>
                 <div class="dataGridItem" id="totalMonto">$0</div>
+                <div class="dataGridItem"></div>
                 <div class="dataGridItem"></div>
                 <div class="dataGridItem"></div>
             </div>
@@ -100,5 +100,24 @@
         </div>
     </main>
     <script src="informe.js"></script>
+    <script>
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                const navLinks = document.getElementById('navLinks');
+                if (data.isAuthenticated) {
+                    navLinks.innerHTML = `
+                        <li><a href="/formulario/">Formulario</a></li>
+                        <li><a href="/informe/">Informe</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    `;
+                } else {
+                    navLinks.innerHTML = `
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Register</a></li>
+                    `;
+                }
+            });
+    </script>
 </body>
 </html>

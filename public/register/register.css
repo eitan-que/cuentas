@@ -1,0 +1,157 @@
+.hidden {
+    display: none;
+}
+
+.form {
+    margin: 20px 0;
+    flex-direction: column;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.input-field {
+    position: relative;
+    width: 75%;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    color: #fff;
+    outline: none;
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 300;
+}
+
+.input-field label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    transition: all .25s;
+
+    border-radius: 8px;
+}
+
+input:focus ~label {
+    top: 0;
+    left: 10px;
+    font-size: 18px;
+    color: #fff;
+    padding: 0 4px;
+    border: 1px solid rgba(255, 255, 255, 1);
+    
+    --y-0: 90%;
+    --c-0: hsla(97, 2%, 11%, 1);
+    --x-0: 91%;
+    --y-1: 24%;
+    --x-1: 17%;
+    --c-1: hsla(75, 0%, 0%, 1);
+    --c-2: hsla(248, 37%, 20%, 1);
+    --y-2: 32%;
+    --x-2: 11%;
+    --x-3: 2%;
+    --c-3: hsla(254.0285544178373, 100%, 14%, 1);
+    --y-3: 31%;
+    --y-4: 93%;
+    --x-4: 74%;
+    --c-4: hsla(349, 0%, 0%, 1);
+    ;
+    background-color: hsla(356, 0%, 0%, 1);
+    background-image: radial-gradient(circle at var(--x-0) var(--y-0), var(--c-0) var(--s-start-0), transparent var(--s-end-0)), radial-gradient(circle at var(--x-1) var(--y-1), var(--c-1) var(--s-start-1), transparent var(--s-end-1)), radial-gradient(circle at var(--x-2) var(--y-2), var(--c-2) var(--s-start-2), transparent var(--s-end-2)), radial-gradient(circle at var(--x-3) var(--y-3), var(--c-3) var(--s-start-3), transparent var(--s-end-3)), radial-gradient(circle at var(--x-4) var(--y-4), var(--c-4) var(--s-start-4), transparent var(--s-end-4));
+    animation: hero-gradient-animation 10s linear infinite alternate;
+    background-blend-mode: normal, normal, normal, normal, normal;
+}
+
+.focusLabel {
+    top: 0 !important;
+    left: 10px !important;
+    font-size: 18px;
+    color: #fff !important;
+    padding: 0 4px;
+    border: 1px solid rgba(255, 255, 255, 1);
+    
+    --y-0: 90%;
+    --c-0: hsla(97, 2%, 11%, 1);
+    --x-0: 91%;
+    --y-1: 24%;
+    --x-1: 17%;
+    --c-1: hsla(75, 0%, 0%, 1);
+    --c-2: hsla(248, 37%, 20%, 1);
+    --y-2: 32%;
+    --x-2: 11%;
+    --x-3: 2%;
+    --c-3: hsla(254.0285544178373, 100%, 14%, 1);
+    --y-3: 31%;
+    --y-4: 93%;
+    --x-4: 74%;
+    --c-4: hsla(349, 0%, 0%, 1);
+    ;
+    background-color: hsla(356, 0%, 0%, 1);
+    background-image: radial-gradient(circle at var(--x-0) var(--y-0), var(--c-0) var(--s-start-0), transparent var(--s-end-0)), radial-gradient(circle at var(--x-1) var(--y-1), var(--c-1) var(--s-start-1), transparent var(--s-end-1)), radial-gradient(circle at var(--x-2) var(--y-2), var(--c-2) var(--s-start-2), transparent var(--s-end-2)), radial-gradient(circle at var(--x-3) var(--y-3), var(--c-3) var(--s-start-3), transparent var(--s-end-3)), radial-gradient(circle at var(--x-4) var(--y-4), var(--c-4) var(--s-start-4), transparent var(--s-end-4));
+    animation: hero-gradient-animation 10s linear infinite alternate;
+    background-blend-mode: normal, normal, normal, normal, normal;
+}
+
+button {
+    width: 75%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3.75px);
+    -webkit-backdrop-filter: blur(3.75px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    color: #fff;
+    outline: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.input-field-selector {
+    position: relative;
+    width: 75%;
+    height: auto;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.input-field-selector label {
+    font-weight: 700;
+}
+
+.input-field-selector select {
+    outline: none;
+    box-shadow: none;
+    width: 30%;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 1);
+    color: #fff;
+    background-image: none;
+    cursor: pointer;
+}
+
+.input-field-selector select::-ms-expand {
+    display: none;
+}
+
+.input-field-selector select option {
+    background-color: rgb(45, 40, 85);
+}

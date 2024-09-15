@@ -1,38 +1,69 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const session = require('express-session');
+const isAuthenticated = require('./middleware/isAuthenticated');
+const isNotAuthenticated = require('./middleware/isNotAuthenticated');
+const crypto = require('crypto');
+
+const secret = crypto.randomBytes(64).toString('hex');
 
 const app = express();
 const PORT = 3000;
 
-// Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Ruta principal
+app.use(session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === 'production' }
+}));
+
+const registerUser = require('./api/registerUser');
+const loginUser = require('./api/loginUser');
+const submitForm = require('./api/submitForm');
+const getCuentas = require('./api/getCuentas');
+const deleteItem = require('./api/deleteItem');
+
+app.use('/api/register', registerUser);
+app.use('/api/login', loginUser);
+app.use('/api/submit-form', submitForm);
+app.use('/api/get-cuentas', getCuentas);
+app.use('/api/delete-item', deleteItem);
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Ruta para el formulario
 app.get('/formulario', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'formulario', 'index.html'));
 });
 
-// Ruta para el informe
 app.get('/informe', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'informe', 'index.html'));
 });
 
-// Importar y usar las rutas de la API
-const submitForm = require('./api/submitForm');
-const getCuentas = require('./api/getCuentas');
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'register', 'index.html'));
+});
 
-app.use('/api/submit-form', submitForm);
-app.use('/api/get-cuentas', getCuentas);
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login', 'index.html'));
+});
 
-// Iniciar el servidor
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
+
+app.get('/api/session', (req, res) => {
+    res.json({ isAuthenticated: !!req.session.userId });
+});
+
 app.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

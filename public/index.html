@@ -9,9 +9,7 @@
 <body>
     <header class="container">
         <h1><a href="/">Cuentas</a></h1>
-        <ul>
-            <li><a href="/formulario/">Formulario</a></li>
-            <li><a href="/informe/">Informe</a></li>
+        <ul id="navLinks">
         </ul>
     </header>
     <main class="container">
@@ -26,7 +24,23 @@
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-    const socket = io();
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                const navLinks = document.getElementById('navLinks');
+                if (data.isAuthenticated) {
+                    navLinks.innerHTML = `
+                        <li><a href="/formulario/">Formulario</a></li>
+                        <li><a href="/informe/">Informe</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    `;
+                } else {
+                    navLinks.innerHTML = `
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Register</a></li>
+                    `;
+                }
+            });
     </script>
 </body>
 </html>

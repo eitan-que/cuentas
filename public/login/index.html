@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuentas</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="formulario.css">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <header class="container">
@@ -15,30 +15,23 @@
     </header>
     <main class="container">
         <div class="texts">
-            <h1>Formulario</h1>
-            <h3>Registra cada transacción para mantener un seguimiento preciso de tus finanzas. Al enviar tus datos, podrás visualizar tus gastos, analizar patrones y mejorar tu planificación financiera.</h3>
+            <h1>Login</h1>
+            <h3>Inicia sesión para acceder a tu cuenta.</h3>
         </div>
-        <form action="/api/submit-form" method="POST" class="form">
+        <form action="/api/login" method="POST" class="form" id="login-form">
             <div class="input-field">
-                <input type="text"  maxlength="20" id="razon" name="razon" placeholder="" required>
-                <label for="razon" id="labelRazon">Razon</label>
+                <input type="email" maxlength="20" id="email" name="email" placeholder="" required>
+                <label for="email" id="labelEmail">Email</label>
             </div>
             <div class="input-field">
-                <input type="number" id="monto" name="monto" placeholder="" max="999999999" min="0" required>
-                <label for="monto" id="labelMonto">Monto</label>
+                <input type="password" maxlength="20" id="password" name="password" placeholder="" required>
+                <label for="password" id="labelPassword">Password</label>
             </div>
-            <div class="input-field-selector">
-                <label for="gastoSumaSelector" class="gastoSumaLabel">Selecciona si agregar o restar el dinero</label>
-                <select name="gastoSumaSelector" id="gastoSumaSelector" required>
-                    <option value="" disabled selected>Gasto / Suma</option>
-                    <option value="gasto">Gasto</option>
-                    <option value="suma">Suma</option>
-                </select>
-            </div>
-            <button type="submit">Enviar</button>
+            <button type="submit">Iniciar Sesión</button>
         </form>
     </main>
-    <script src="formulario.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="login.js"></script>
     <script>
         fetch('/api/session')
             .then(response => response.json())

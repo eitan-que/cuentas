@@ -3,7 +3,7 @@ const inputMonto = document.getElementById('monto');
 const labelRazon = document.getElementById('labelRazon');
 const labelMonto = document.getElementById('labelMonto');
 
-document.addEventListener("click", function(e) {
+function thatInputLabelThing() {
     if (inputRazon.value) {
         labelRazon.classList.add('focusLabel');
     } else {
@@ -14,4 +14,12 @@ document.addEventListener("click", function(e) {
     } else {
         labelMonto.classList.remove('focusLabel');
     }
-})
+};
+
+document.addEventListener("click", function(e) {
+    thatInputLabelThing();
+    });
+    
+document.addEventListener("keydown", function(e) {
+    thatInputLabelThing();
+});
